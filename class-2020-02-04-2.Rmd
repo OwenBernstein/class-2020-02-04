@@ -7,12 +7,37 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
 library(tidyverse)
+
+data <- read_xlsx("pwt91 (1).xlsx") %>% 
+  filter(country == "Thailand") %>% 
+  select(year, pop, rgdpe, rgdpna, emp, avh, ccon, cn, ctfp, delta, cwtfp, csh_c) %>% 
+  mutate(gdp_per_capita = rgdpe / pop)
 ```
 
 ```{r}
-library(gov.1005.data)
-data("congress")
+plot <- ggplot(data, aes(year, rgdpe)) + 
+  geom_line() +
+  scale_y_log10()
 
-congress %>% arrange(desc(age))
+
+plot4 <- ggplot(data, aes(year, rgdpe)) +
+  geom_line() +
+  scale_y_continuous(limits = c(0, 1200000), breaks = seq(0, 1200000, by = 200000)) +
+  scale_y_log10()
+  #labs(title = "Thailands GDP over Time", 
+   #    x = "Year", y = "Real GDP at Chained PPP (in mil. 2011 $US") + 
+  #theme_classic() +
+  #geom_vline(xintercept = 1997) +
+  #geom_text(aes(x = 2012.5, label = "Asian Financial Crisis", y = 3.5), 
+   #         color = "blue", angle = "90", size = 3)
+
+plot2 <- ggplot(data, aes(year, cwtfp)) + 
+  geom_line()
+
+plot3 <- ggplot(data, aes(year, gdp_per_capita)) + geom_line() + scale_y_log10()
+
+
 ```
+
