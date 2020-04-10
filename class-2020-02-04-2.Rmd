@@ -1,5 +1,5 @@
 ---
-title: "congress"
+title: "Thailand"
 author: "Owen Bernstein"
 date: "2/4/2020"
 output: html_document
@@ -8,6 +8,7 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(readxl)
+library(gt)
 library(tidyverse)
 
 data <- read_xlsx("pwt91 (1).xlsx") %>% 
@@ -16,28 +17,43 @@ data <- read_xlsx("pwt91 (1).xlsx") %>%
   mutate(gdp_per_capita = rgdpe / pop)
 ```
 
-```{r}
+```{r, include = FALSE}
 plot <- ggplot(data, aes(year, rgdpe)) + 
   geom_line() +
   scale_y_log10()
 
 
-plot4 <- ggplot(data, aes(year, rgdpe)) +
+plot1 <- ggplot(data, aes(year, rgdpe)) +
   geom_line() +
-  scale_y_continuous(limits = c(0, 1200000), breaks = seq(0, 1200000, by = 200000)) +
-  scale_y_log10()
-  #labs(title = "Thailands GDP over Time", 
-   #    x = "Year", y = "Real GDP at Chained PPP (in mil. 2011 $US") + 
-  #theme_classic() +
-  #geom_vline(xintercept = 1997) +
-  #geom_text(aes(x = 2012.5, label = "Asian Financial Crisis", y = 3.5), 
-   #         color = "blue", angle = "90", size = 3)
+  scale_y_log10(breaks = c(30000, 100000, 300000, 1000000), labels = c("30000", "100000", "300000", "1000000")) +
+  labs(title = "Thailand's GDP over Time", 
+       x = "Year", y = "Real GDP at Chained PPPs (in mil. 2011 $US)") + 
+  theme_classic() +
+  geom_vline(xintercept = 1996.5) +
+  geom_text(aes(x = 1994, label = "Asian Financial Crisis", y = 100000), 
+            angle = "90", size = 4)
 
-plot2 <- ggplot(data, aes(year, cwtfp)) + 
+plot2 <- ggplot(data, aes(year, rgdpe)) +
+  geom_line() +
+  scale_y_continuous() +
+  labs(title = "Thailand's GDP over Time", 
+       x = "Year", y = "Real GDP at Chained PPP (in mil. 2011 $US)") + 
+  theme_classic() +
+  geom_vline(xintercept = 1996.5) +
+  geom_text(aes(x = 1994, label = "Asian Financial Crisis", y = 750000), 
+            angle = "90", size = 4)
+
+plot6 <- ggplot(data, aes(year, cwtfp)) + 
   geom_line()
 
 plot3 <- ggplot(data, aes(year, gdp_per_capita)) + geom_line() + scale_y_log10()
 
+```
+
+```{r, echo = FALSE}
+plot1
+
 
 ```
+
 
